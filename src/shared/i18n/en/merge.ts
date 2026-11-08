@@ -27,6 +27,7 @@ const dict: Record<string, string> = {
   'In den Dateien stehen noch Konfliktmarker (<<<<<<<).': 'The files still contain conflict markers (<<<<<<<).',
   'Keine Session hat Änderungen.': 'No session has changes.',
   'Kein Testbefehl angegeben.': 'No test command given.',
+  'Testbefehl nicht erlaubt – speichere ihn zuerst in den Einstellungen.': 'Test command not allowed – save it in the settings first.',
   'Es laufen schon Tests.': 'Tests are already running.',
   'Diese Aktion braucht eine ausdrückliche Bestätigung.': 'This action needs explicit confirmation.',
   'Ordner liegt nicht im Projekt': 'Folder is not inside the project',

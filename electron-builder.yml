@@ -37,7 +37,7 @@ nsis:
   artifactName: VibeDesk-Setup-${version}.${ext}
 publish:
   provider: github
-  owner: fxd-gif
+  owner: cashea
   repo: vibedesk
   releaseType: release
 fileAssociations:

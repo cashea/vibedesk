@@ -25,8 +25,12 @@ export function setupUpdater(send: (s: UpdateStatus) => void, display: UpdaterDi
   ipcMain.handle('update:status', () => status)
   ipcMain.handle('update:version', () => app.getVersion())
 
-  // Im Entwicklungsmodus gibt es nichts zu aktualisieren
-  if (!app.isPackaged) {
+  // Fork (cashea/vibedesk): Updates sind abgeschaltet – die Releases des Originals würden den Fork überschreiben.
+  // Auf true setzen und `publish` in electron-builder.yml auf den eigenen Fork zeigen lassen, um sie wieder einzuschalten.
+  const UPDATES_ENABLED = false
+
+  // Im Entwicklungsmodus (oder bei abgeschalteten Updates) gibt es nichts zu aktualisieren
+  if (!app.isPackaged || !UPDATES_ENABLED) {
     ipcMain.handle('update:check', () => set({ state: 'none' }))
     ipcMain.on('update:install', () => {})
     ipcMain.on('update:download', () => {})

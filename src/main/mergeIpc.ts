@@ -40,6 +40,13 @@ export function registerMergeIpc(merge: MergeService, git: GitService, projects:
   ipcMain.handle('merge:removeWorktree', (_e, id, wt, force, confirmed) => merge.removeWorktree(root(id), str(wt), force === true, confirmed === true))
   ipcMain.handle('merge:deleteBranch', (_e, id, branch, confirmed) => merge.deleteBranch(root(id), str(branch), confirmed === true))
   ipcMain.handle('merge:review', (_e, id) => merge.review(root(id)))
-  ipcMain.handle('merge:runTests', (_e, id, wt, cmd) => merge.runTests(root(id), str(wt), str(cmd), (line) => send('merge:testLog', line)))
+  ipcMain.handle('merge:runTests', (_e, id, wt, cmd) => {
+    const r = root(id)
+    const command = str(cmd).trim()
+    // Nur der gespeicherte oder automatisch erkannte Testbefehl darf laufen – nicht, was der Renderer sonst schickt
+    const allowed = [testCmd(id)?.trim(), merge.detectTestCmd(r)].filter((c): c is string => !!c)
+    if (!allowed.includes(command)) throw new Error(t('Testbefehl nicht erlaubt – speichere ihn zuerst in den Einstellungen.'))
+    return merge.runTests(r, str(wt), command, (line) => send('merge:testLog', line))
+  })
   ipcMain.on('merge:stopTests', () => merge.stopTests())
 }
